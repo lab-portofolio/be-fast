@@ -1,0 +1,77 @@
+<div class="w3-display-container w3-col m8 w3-display-bottomleft w3-display-bottomright w3-display-topleft w3-display-topright">
+    <div class="w3-display-middle">
+        <div class="w3-text-white w3-xxlarge knewave w3-margin-bottom w3-border-white w3-bottombar w3-padding w3-margin-left w3-margin-right w3-center">BE FAST APP</div>
+        <br>
+        <div class="w3-container">
+            <div class="w3-padding w3-blue w3-bottombar w3-leftbar w3-rightbar w3-topbar w3-border-white w3-round w3-card w3-xlarge"
+                style="width: 640px"
+                id="data-frame"></div>
+        
+            <input type="hidden"
+                value="<?php echo $_SESSION['userAuth']->id; ?>"
+                id="player_id" />
+        
+            <div class="w3-margin-top">
+                <input type="text" 
+                    id="type-text"
+                    placeholder="Type here..." 
+                    class="w3-input w3-xlarge w3-text-blue w3-white w3-round w3-padding w3-card"
+                    onkeypress="playTyping(event)" />
+                <div class="w3-row w3-margin-top">
+                    <button class="w3-button w3-dark-grey w3-round w3-hover-dark-grey w3-card"
+                        readonly="true"
+                        type="button"
+                        style="outline: none">
+                        <span class="fa fa-clock-o"></span>
+                        <span 
+                            id="time-counter"></span>
+                    </button>
+                    <button class="w3-button w3-green w3-round w3-hover-green w3-card"
+                        onclick="location.reload()"
+                        type="button"
+                        style="outline: none">
+                        <span class="fa fa-refresh"></span>
+                        Reload
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="w3-container w3-margin-top" 
+            id="profile"></div>
+        <br>
+        <div class="w3-margin-top w3-center">
+            <span class="w3-text-white">Copyright &copy; developer.aitekteam.com</span>
+        </div>
+    </div>
+</div>
+
+<nav class="w3-sidebar w3-display-topright w3-display-bottomright w3-col m4 w3-card-4 w3-bar-block">
+    <div class="w3-bar-item w3-xlarge w3-dark-grey">
+        Top Rank
+    </div>
+    <div id="top_rank"></div>
+</nav>
+
+<script src="./assets/js/play.js"></script>
+<script>
+    getDataToDisplay()
+    const updateTopRank = () => {
+        let formData = new FormData()
+        formData.append("action", "getTopRank")
+        formData.append("player_id", document.getElementById("player_id").value)
+        ajax(formData, "http://localhost/befast/server/gamePlay.php", "POST", function(response){
+            document.getElementById("top_rank").innerHTML = response
+        })
+    }
+    const updateMyAbility = () => {
+        let formData = new FormData()
+        formData.append("action", "getProfile")
+        formData.append("player_id", document.getElementById("player_id").value)
+        ajax(formData, "http://localhost/befast/server/gamePlay.php", "POST", function(response){
+            document.getElementById("profile").innerHTML = response
+        })
+    }
+    
+    updateMyAbility()
+    updateTopRank()
+</script>
